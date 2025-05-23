@@ -8,13 +8,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-//Use this for Store Session
-// model Session {
-//   id        String   @id
-//   sid       String   @unique
-//   data      String   
-//   expiresAt   DateTime
-// }
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String   
+  expiresAt   DateTime
+}
 
 //Use npm prisma db push to sync
 //Use npm prisma generate to generate
