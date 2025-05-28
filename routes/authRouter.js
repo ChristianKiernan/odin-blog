@@ -4,6 +4,6 @@ const router = Router();
 
 router.post('/register', auth.postRegister)
 router.post('/login', auth.postLogIn)
-router.post('/logout', userController.postLogOut)
+router.post('/logout', auth.postLogOut)
 
 module.exports = router;

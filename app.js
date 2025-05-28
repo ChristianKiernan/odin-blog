@@ -3,6 +3,8 @@ const express = require('express');
 const expressSession = require('express-session');
 const bodyParser = require('body-parser')
 const passport = require('passport');
+const userRouter = require('./routes/userRouter');
+const postRouter = require('./routes/postRouter')
 const app = express();
 
 app.use(bodyParser.json())
@@ -35,5 +37,6 @@ app.get("/", (req, res) => {
         message: 'Welcome to the App',
     });
 });
-
+app.use('/users', userRouter);
+app.use('/posts', postRouter);
 app.listen(5000, () => console.log('App listening on localhost:5000'));
