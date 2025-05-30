@@ -1,17 +1,31 @@
 const prisma = require('../config/prisma');
 
 exports.getPosts = async (req, res) => {
-	const posts = await prisma.post.findMany();
+  try {
+    // Only return published posts
+    const posts = await prisma.post.findMany({
+      where: { isPublished: true },
+      orderBy: { createdAt: 'desc' }, 
+      include: {
+        author: {
+          select: { username: true }, 
+        },
+      },
+    });
 
-	//Handle case where there are no posts
-	if (posts.length === 0) {
-		res.json({
-			message: 'No posts yet',
-		});
-	} else {
-		res.json(posts);
-	}
+    // If no posts exist
+    if (posts.length === 0) {
+      return res.status(200).json({ message: 'No published posts available.' });
+    }
+
+    // Return the list of posts
+    return res.status(200).json(posts);
+  } catch (err) {
+    console.error('Error fetching posts:', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
 };
+
 
 exports.createPost = async (req, res) => {
 	try {
