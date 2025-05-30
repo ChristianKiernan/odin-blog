@@ -8,13 +8,12 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@quixo3/prisma-session-store": "^3.1.13",
+    "@prisma/client": "^6.8.2",
     "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "express-ejs-layouts": "^2.5.1",
-    "express-session": "^1.18.1",
     "express-validator": "^7.2.1",
     "jsonwebtoken": "^9.0.2",
     "passport": "^0.7.0",
