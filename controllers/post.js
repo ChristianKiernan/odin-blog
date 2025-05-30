@@ -15,7 +15,7 @@ exports.getPosts = async (req, res, next) => {
 			return next(new AppError('No published posts available.', 200));
 		}
 
-		res.status(200).json(posts);
+		res.status(200).json({ status: success, data: { posts } });
 	} catch (err) {
 		next(err);
 	}
@@ -38,7 +38,7 @@ exports.createPost = async (req, res, next) => {
 			},
 		});
 
-		res.status(201).json(post);
+		res.status(201).json({ status: success, data: {post} });
 	} catch (err) {
 		next(err);
 	}
@@ -46,11 +46,16 @@ exports.createPost = async (req, res, next) => {
 
 exports.updatePostById = async (req, res, next) => {
 	try {
-		const { id } = req.params;
+		const id = Number(req.params.id);
+
+		if (isNaN(id)) {
+			return next(new AppError('Invalid post ID.', 400));
+		}
+
 		const { title, content, isPublished } = req.body;
 
 		const existingPost = await prisma.post.findUnique({
-			where: { id: parseInt(id) },
+			where: { id: id },
 		});
 
 		if (!existingPost) {
@@ -66,7 +71,7 @@ exports.updatePostById = async (req, res, next) => {
 			data: { title, content, isPublished },
 		});
 
-		res.status(200).json(updatedPost);
+		res.status(200).json({ status: success, });
 	} catch (err) {
 		next(err);
 	}
@@ -74,10 +79,14 @@ exports.updatePostById = async (req, res, next) => {
 
 exports.deletePostById = async (req, res, next) => {
 	try {
-		const { id } = req.params;
+		const id = Number(req.params.id);
+
+		if (isNaN(id)) {
+			return next(new AppError('Invalid post ID.', 400));
+		}
 
 		const existingPost = await prisma.post.findUnique({
-			where: { id: parseInt(id) },
+			where: { id: id },
 		});
 
 		if (!existingPost) {
@@ -90,7 +99,7 @@ exports.deletePostById = async (req, res, next) => {
 
 		await prisma.post.delete({ where: { id: parseInt(id) } });
 
-		res.status(200).json({ message: 'Post deleted successfully.' });
+		res.status(204).send();
 	} catch (err) {
 		next(err);
 	}
