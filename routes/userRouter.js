@@ -1,9 +1,8 @@
 const { Router } = require('express');
 const user = require('../controllers/user');
+const { validateRegister } = require('../validators/userValidator')
 const router = Router();
 
-router.post('/register', user.register)
-// router.get('/:id', user.getById);
-// router.delete('/users/:id', user.deleteById);
+router.post('/register', validateRegister, user.register)
 
 module.exports = router;
