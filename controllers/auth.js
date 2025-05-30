@@ -23,10 +23,9 @@ exports.login = async (req, res) => {
 		}
 
 		// Create JWT payload
-		const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-			expiresIn: '1h',
+		const token = jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN, {
+			expiresIn: '30m',
 		});
-
 		res.json({ token });
 	} catch (err) {
 		console.error('Login error:', err);
