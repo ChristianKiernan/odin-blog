@@ -1,29 +1,40 @@
-const prisma = require('../config/prisma')
+const prisma = require('../config/prisma');
 const bcrypt = require('bcryptjs');
+const AppError = require('../utils/appError');
 
-exports.register = async (req, res) => {
-  const { username, password, email } = req.body;
+exports.register = async (req, res, next) => {
+	const { username, password, email } = req.body;
 
-  try {
-    const hashed = await bcrypt.hash(password, 10);
-    const user = await prisma.user.create({
-      data: {
-        username,
-        password: hashed,
-        email,
-      },
-    });
+	try {
+		const existingUser = await prisma.user.findFirst({
+			where: {
+				OR: [{ username }, { email }],
+			},
+		});
 
-    res.status(201).json({ message: 'User registered successfully', user });
-  } catch (err) {
-    console.error('Register error:', err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
+		if (existingUser) {
+			return next(new AppError('Username or email already in use.', 409));
+		}
+
+		const hashedPassword = await bcrypt.hash(password, 10);
+
+		const user = await prisma.user.create({
+			data: {
+				username,
+				password: hashedPassword,
+				email,
+			},
+		});
+
+		res.status(201).json({
+			message: 'User registered successfully.',
+			user: {
+				id: user.id,
+				username: user.username,
+				email: user.email,
+			},
+		});
+	} catch (err) {
+		next(err);
+	}
 };
-
-// exports.getById = async (req, res) => {
-//     const user = await prisma.user.findUnique({
-//         where: { id: req.params.id},
-//     });
-//     res.json(user);
-// };
