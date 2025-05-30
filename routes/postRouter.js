@@ -3,7 +3,11 @@ const { Router } = require('express');
 const post = require('../controllers/post');
 const router = Router();
 
-router.get('/', post.getPosts);
+router.get(
+	'/',
+	passport.authenticate('jwt', { session: false }),
+	post.getPosts
+);
 router.post(
 	'/',
 	passport.authenticate('jwt', { session: false }),
