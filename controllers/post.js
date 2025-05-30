@@ -44,8 +44,33 @@ exports.createPost = async (req, res, next) => {
 	}
 };
 
-exports.editById;
-//TODO
+exports.updatePostById = async (req, res, next) => {
+	try {
+		const { id } = req.params;
+		const { title, content, isPublished } = req.body;
+
+		const existingPost = await prisma.post.findUnique({
+			where: { id: parseInt(id) },
+		});
+
+		if (!existingPost) {
+			return next(new AppError('Post not found.', 404));
+		}
+
+		if (existingPost.authorId !== req.user.id) {
+			return next(new AppError('Unauthorized to update this post.', 403));
+		}
+
+		const updatedPost = await prisma.post.update({
+			where: { id: parseInt(id) },
+			data: { title, content, isPublished },
+		});
+
+		res.status(200).json(updatedPost);
+	} catch (err) {
+		next(err);
+	}
+};
 
 exports.deleteById;
 //TODO
