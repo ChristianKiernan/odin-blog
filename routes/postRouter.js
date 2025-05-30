@@ -3,17 +3,11 @@ const { Router } = require('express');
 const post = require('../controllers/post');
 const router = Router();
 
-router.get(
-	'/',
-	passport.authenticate('jwt', { session: false }),
-	post.getPosts
-);
-router.post(
-	'/',
-	passport.authenticate('jwt', { session: false }),
-	post.createPost
-);
-// router.put('/:id', post.editById);
-// router.delete('/:id', post.deleteById);
+const auth = passport.authenticate('jwt', { session: false });
+
+router.get('/', auth, post.getPosts);
+router.post('/', auth, post.createPost);
+router.put('/:id', auth, post.updatePostById);
+router.delete('/:id', auth, post.deletePostById);
 
 module.exports = router;
