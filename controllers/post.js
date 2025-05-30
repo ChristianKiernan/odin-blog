@@ -1,35 +1,33 @@
 const prisma = require('../config/prisma');
+const AppError = require('../utils/appError');
 
-exports.getPosts = async (req, res) => {
-  try {
-    // Only return published posts
-    const posts = await prisma.post.findMany({
-      where: { isPublished: true },
-      orderBy: { createdAt: 'desc' }, 
-      include: {
-        author: {
-          select: { username: true }, 
-        },
-      },
-    });
+exports.getPosts = async (req, res, next) => {
+	try {
+		const posts = await prisma.post.findMany({
+			where: { isPublished: true },
+			orderBy: { createdAt: 'desc' },
+			include: {
+				author: { select: { username: true } },
+			},
+		});
 
-    // If no posts exist
-    if (posts.length === 0) {
-      return res.status(200).json({ message: 'No published posts available.' });
-    }
+		if (!posts.length) {
+			return next(new AppError('No published posts available.', 200));
+		}
 
-    // Return the list of posts
-    return res.status(200).json(posts);
-  } catch (err) {
-    console.error('Error fetching posts:', err);
-    return res.status(500).json({ error: 'Internal server error' });
-  }
+		res.status(200).json(posts);
+	} catch (err) {
+		next(err);
+	}
 };
 
-
-exports.createPost = async (req, res) => {
+exports.createPost = async (req, res, next) => {
 	try {
 		const { title, content, isPublished } = req.body;
+
+		if (!title || !content) {
+			return next(new AppError('Title and content are required.', 400));
+		}
 
 		const post = await prisma.post.create({
 			data: {
@@ -41,9 +39,8 @@ exports.createPost = async (req, res) => {
 		});
 
 		res.status(201).json(post);
-	} catch (error) {
-		console.error('Error creating post:', error);
-		res.status(500).json({ error: 'Internal Server Error' });
+	} catch (err) {
+		next(err);
 	}
 };
 
