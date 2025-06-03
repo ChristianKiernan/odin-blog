@@ -38,7 +38,7 @@ exports.createPost = async (req, res, next) => {
 			},
 		});
 
-		res.status(201).json({ status: success, data: {post} });
+		res.status(201).json({ status: success, data: { post } });
 	} catch (err) {
 		next(err);
 	}
@@ -71,7 +71,7 @@ exports.updatePostById = async (req, res, next) => {
 			data: { title, content, isPublished },
 		});
 
-		res.status(200).json({ status: success, });
+		res.status(200).json({ status: success, data: { updatedPost } });
 	} catch (err) {
 		next(err);
 	}
