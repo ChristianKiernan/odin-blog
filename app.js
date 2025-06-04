@@ -7,6 +7,7 @@ const errorHandler = require('./middleware/errorHandler');
 const authRouter = require('./routes/authRouter');
 const userRouter = require('./routes/userRouter');
 const postRouter = require('./routes/postRouter');
+const commentRouter = require('./routes/commentRouter');
 
 const app = express();
 
