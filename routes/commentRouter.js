@@ -6,7 +6,7 @@ const router = Router({mergeParams: true});
 const auth = passport.authenticate('jwt', { session: false });
 
 router.post('/', auth, comment.createComment);
-router.get('/', comment.getComments);
+router.get('/', auth, comment.getComments);
 router.put('/:commentId', auth, comment.editById);
 router.delete('/:commentId', auth, comment.deleteById);
 
