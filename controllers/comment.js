@@ -25,7 +25,28 @@ exports.getComments = async (req, res, next) => {
 
 exports.createComment = async (req, res, next) => {
 	try {
-		//TODO
+        const postId = Number(req.params.postId)
+
+        if (isNaN(postId)) {
+            return next(new AppError('Invalid Post ID.', 400));
+        };
+
+		const { content } = req.body;
+
+        if (!content) {
+            return next(new AppError("Content is required", 400));
+        };
+
+        const comment = await prisma.comment.create({
+            data: {
+                content: content, 
+                authorId: req.user.id, 
+                postId: postId
+            },
+        });
+
+        res.status(200).json({ data: {comment} })
+
 	} catch (err) {
 		next(err);
 	}
