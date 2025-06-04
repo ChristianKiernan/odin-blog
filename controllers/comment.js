@@ -87,7 +87,27 @@ exports.editById = async (req, res, next) => {
 
 exports.deleteById = async (req, res, next) => {
 	try {
-		//TODO
+        const id = Number(req.params.commentId);
+
+        if (isNaN(id)) {
+            return next(new AppError('Invalid comment Id.', 400));
+        };
+
+        const existingComment = await prisma.comment.findUnique({
+			where: { id: id },
+		});
+
+        if (!existingComment) {
+			return next(new AppError('Comment not found.', 404));
+		}
+
+		if (existingComment.authorId !== req.user.id && !req.user.isAdmin) {
+			return next(new AppError('Unauthorized to delete this comment.', 403));
+        };
+
+        await prisma.comment.delete({ where: { id: id } });
+
+        res.status(204).send();
 	} catch (err) {
 		next(err);
 	}
