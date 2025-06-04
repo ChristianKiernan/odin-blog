@@ -54,7 +54,32 @@ exports.createComment = async (req, res, next) => {
 
 exports.editById = async (req, res, next) => {
 	try {
-		//TODO
+		const id = Number(req.params.commentId);
+
+		if (isNaN(id)) {
+			return next(new AppError(`Invalid comment ID ${commentId}.`, 400));
+		}
+
+        const { content } = req.body;
+
+        const existingComment = await prisma.comment.findUnique({
+			where: { id: id },
+		});
+
+        if (!existingComment) {
+			return next(new AppError('Comment not found.', 404));
+		}
+
+		if (existingComment.authorId !== req.user.id) {
+			return next(new AppError('Unauthorized to update this comment.', 403));
+		}
+
+        const updatedComment = await prisma.comment.update({
+			where: { id: id },
+			data: { content },
+		});
+
+		res.status(200).json({ data: { updatedComment } });
 	} catch (err) {
 		next(err);
 	}
