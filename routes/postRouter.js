@@ -7,6 +7,7 @@ const auth = passport.authenticate('jwt', { session: false });
 
 router.get('/', auth, post.getPosts);
 router.post('/', auth, post.createPost);
+router.get('/:id', auth, post.getPostById);
 router.put('/:id', auth, post.updatePostById);
 router.delete('/:id', auth, post.deletePostById);
 

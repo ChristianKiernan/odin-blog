@@ -44,6 +44,24 @@ exports.createPost = async (req, res, next) => {
 	}
 };
 
+exports.getPostById = async (req, res, next) => {
+	try {
+		const id = Number(req.params.id);
+
+		if (isNaN(id)) {
+			return next(new AppError('Invalid post ID.', 400));
+		}
+
+		const post = await prisma.post.findUnique({
+			where: { id: id },
+		});
+
+		res.status(200).json({ data: { post } });
+	} catch (err) {
+		next(err);
+	}
+};
+
 exports.updatePostById = async (req, res, next) => {
 	try {
 		const id = Number(req.params.id);
