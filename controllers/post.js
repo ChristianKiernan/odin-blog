@@ -15,7 +15,7 @@ exports.getPosts = async (req, res, next) => {
 			return next(new AppError('No published posts available.', 200));
 		}
 
-		res.status(200).json({ status: success, data: { posts } });
+		res.status(200).json({ data: { posts } });
 	} catch (err) {
 		next(err);
 	}
@@ -38,7 +38,7 @@ exports.createPost = async (req, res, next) => {
 			},
 		});
 
-		res.status(201).json({ status: success, data: { post } });
+		res.status(201).json({ data: { post } });
 	} catch (err) {
 		next(err);
 	}
@@ -71,7 +71,7 @@ exports.updatePostById = async (req, res, next) => {
 			data: { title, content, isPublished },
 		});
 
-		res.status(200).json({ status: success, data: { updatedPost } });
+		res.status(200).json({ data: { updatedPost } });
 	} catch (err) {
 		next(err);
 	}
