@@ -24,7 +24,7 @@ exports.login = async (req, res) => {
 
 		// Create JWT payload
 		const token = jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN, {
-			expiresIn: '30m',
+			expiresIn: '7d',
 		});
 		res.json({ token });
 	} catch (err) {
