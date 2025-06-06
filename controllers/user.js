@@ -38,3 +38,17 @@ exports.register = async (req, res, next) => {
 		next(err);
 	}
 };
+
+exports.getDraftsByUser = async (req, res, next) => {
+	try {
+		const userId = req.user.id;
+		const drafts = await prisma.post.findMany({
+			where: { authorId: userId, isPublished: false },
+			include: { author: { select: { id: false, username: true } } },
+			orderBy: { updatedAt: 'desc' },
+		});
+		res.status(200).json({ posts: drafts });
+	} catch (err) {
+		next(err);
+	}
+};
