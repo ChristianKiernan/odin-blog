@@ -2,7 +2,6 @@ const { Router } = require('express');
 const passport = require('../config/passport');
 const comment = require('../controllers/comment');
 const router = Router({ mergeParams: true });
-
 const auth = passport.authenticate('jwt', { session: false });
 
 router.post('/', auth, comment.createComment);

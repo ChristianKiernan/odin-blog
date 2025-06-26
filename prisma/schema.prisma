@@ -38,6 +38,3 @@ model Comment {
   author User @relation(fields: [authorId], references: [id])
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
-
-//Use npx prisma db push to sync
-//Use npx prisma generate to generate

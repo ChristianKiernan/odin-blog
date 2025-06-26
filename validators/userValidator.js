@@ -26,6 +26,7 @@ exports.validateRegister = [
 	(req, res, next) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
+			
 			// Convert express-validator errors into custom errors
 			const message = errors
 				.array()
