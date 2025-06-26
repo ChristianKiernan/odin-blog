@@ -45,7 +45,7 @@ exports.getDraftsByUser = async (req, res, next) => {
 		const drafts = await prisma.post.findMany({
 			where: { authorId: userId, isPublished: false },
 			include: { author: { select: { id: false, username: true } } },
-			orderBy: { updatedAt: 'desc' },
+			orderBy: { createdAt: 'desc' },
 		});
 		res.status(200).json({ posts: drafts });
 	} catch (err) {
