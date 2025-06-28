@@ -17,13 +17,12 @@ const clientUrl = process.env.CLIENT_URL;
 const corsOptions = {
   origin: clientUrl,
   credentials: true, 
-  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   optionsSuccessStatus: 204
 }
 
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
 
 // Middlewares
 app.use(passport.initialize());
