@@ -11,6 +11,14 @@ const commentRouter = require('./routes/commentRouter');
 
 const app = express();
 
+const cors = require('cors');
+const clientUrl = process.env.CLIENT_URL;
+
+app.use(cors({
+  origin: clientUrl,
+  credentials: true,
+}));
+
 // Mddlewares
 app.use(passport.initialize());
 app.use(express.json());
