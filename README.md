@@ -1,7 +1,7 @@
 # Odin Blog - REST API
 The back-end of a blogging REST API, implemented as a submission for the NodeJS course in the Odin Project (full-stack JavaScript track).
 
-
+**Link to project:**
 ## Built With
 
 - [Node.js](https://nodejs.org/) – JavaScript runtime
@@ -14,15 +14,12 @@ The back-end of a blogging REST API, implemented as a submission for the NodeJS 
 - [REST Client (VS Code)](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) – Local REST API testing
 
 ## Functionality
-Users are required to register and then log in (JSON Web Token-based authentication). Odin Blog provides a site where authenticated users can create, view, update, and delete blog posts. Users can also create/view/update/delete comments on other user's blog posts. 
-
+Users are required to register and then log in (JSON Web Token-based authentication). The API provides a backend that defines the HTTP methods GET, POST, UPDATE, and DELETE (on blog posts and comments).
 ## Lessons Learned
-
 The main goals of this project were to implement a backend that adheres to RESTful standards, and to gain familiarity with coding clean API endpoints.
-
 A couple things that I want to improve
 upon in future projects;
 
 * Overall understanding/integration of express - specifc middleware
 * Developing a more streamlined scaffolding process
-* Git-commit comments that better adhere to best practices
+* Improved documentation
