@@ -14,12 +14,18 @@ const app = express();
 const cors = require('cors');
 const clientUrl = process.env.CLIENT_URL;
 
-app.use(cors({
+const corsOptions = {
   origin: clientUrl,
-  credentials: true,
-}));
+  credentials: true, 
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 204
+}
 
-// Mddlewares
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+
+// Middlewares
 app.use(passport.initialize());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
