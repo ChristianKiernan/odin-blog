@@ -11,20 +11,20 @@ const commentRouter = require('./routes/commentRouter');
 
 const app = express();
 
-const cors = require('cors');
 const clientUrl = process.env.CLIENT_URL;
 
-const corsOptions = {
-  origin: clientUrl,
-  credentials: true, 
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  optionsSuccessStatus: 204
-}
-
-app.use(cors(corsOptions));
-
 // Middlewares
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', clientUrl);
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+  next();
+});
+
 app.use(passport.initialize());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
