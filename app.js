@@ -10,24 +10,13 @@ const postRouter = require('./routes/postRouter');
 const commentRouter = require('./routes/commentRouter');
 
 const app = express();
-
 const clientUrl = process.env.CLIENT_URL;
+const cors = require('cors');
 
-// Middlewares
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', clientUrl);
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(204);
-  }
-  next();
-});
-
-app.get('/health', (req, res) => {
-  res.json({status: 'ok'});
-});
+app.use(cors({
+  origin: clientUrl,
+  credentials: true,
+}));
 
 app.use(passport.initialize());
 app.use(express.json());
