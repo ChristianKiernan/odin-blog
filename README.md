@@ -1,7 +1,6 @@
 # Odin Blog - REST API
 The back-end of a blogging REST API, implemented as a submission for the NodeJS course in the Odin Project (full-stack JavaScript track).
 
-**Link to project:**
 ## Built With
 
 - [Node.js](https://nodejs.org/) – JavaScript runtime
